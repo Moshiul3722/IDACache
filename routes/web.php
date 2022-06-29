@@ -4,6 +4,7 @@ use App\Http\Controllers\backend\ActivityController;
 use App\Http\Controllers\backend\DashboardController;
 use App\Http\Controllers\backend\CacheInController;
 use App\Http\Controllers\backend\LoanController;
+use App\Http\Controllers\backend\UserController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,10 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::resource('loan', LoanController::class);
     // Activity
     Route::resource('activity', ActivityController::class);
+
+    //User
+    Route::resource('users', UserController::class);
+
 
     Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password_reset');
 });

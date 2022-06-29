@@ -60,7 +60,7 @@
                  </svg>
                  Loan
              </a>
-             <a href="#" class="flex items-center my-1 pl-4 py-3 border-1-4 hover:bg-sky-900 hover:text-white">
+             <a href="{{ route('users.index') }}" class="flex items-center pl-4 py-3 {{ request()->routeIs('users.*') ? 'text-white bg-sky-900 border-sky-900' : '' }}">
                  <svg class="w-5 mr-2" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                      <path
                          d="M17.2219 8.43631C16.9516 8.79894 16.6422 9.12003 16.303 9.39055C17.7401 10.3073 18.6952 11.9156 18.6952 13.743C18.6952 14.3361 17.8249 14.7451 17.3062 14.9361C16.9017 15.0851 16.426 15.2071 15.9062 15.2992C15.923 15.5188 15.9317 15.7407 15.9317 15.9646C15.9317 16.1583 15.9148 16.3841 15.8657 16.6299C16.5643 16.5214 17.2058 16.3634 17.757 16.1605C19.6109 15.478 20 14.4691 20 13.743C19.9999 11.5478 18.8997 9.605 17.2219 8.43631Z"
@@ -77,7 +77,7 @@
                  </svg>
                  Users
              </a>
-             <a href="{{ route('activity.index') }}" class="flex items-center my-1 pl-4 py-3 border-1-4 hover:bg-sky-900 hover:text-white">
+             <a href="{{ route('activity.index') }}" class="flex items-center pl-4 py-3 border-1-4 hover:bg-sky-900 hover:text-white">
                  <svg class="w-5 mr-2" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                      <g clip-path="url(#clip0_4_198)">
                          <path

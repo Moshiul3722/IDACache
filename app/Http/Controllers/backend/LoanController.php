@@ -54,24 +54,25 @@ class LoanController extends Controller
             }
 
             $user = User::create([
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'password' => Hash::make(Str::random(8)),
-                'phone'    => $request->phone,
-                'image'    => $thumb,
-                'role'     => 'client',
-                'status'   => 'active',
+                'name'       => $request->name,
+                'email'      => $request->email,
+                'password'   => Hash::make(Str::random(8)),
+                'fatherName' => $request->fathersName,
+                'phone'      => $request->phone,
+                'image'      => $thumb,
+                'role'       => 'client',
+                'status'     => 'active',
             ]);
 
             // Event fire
-            ActivityEvent::dispatch('New Client registered', Auth::id());
+            // ActivityEvent::dispatch('New Client registered', Auth::id());
 
             // Send Email
-            Mail::send('backend.emails.loanReg', [''], function ($message) {
-                $message->from('john@johndoe.com', 'John Doe');
-                $message->to('john@johndoe.com', 'John Doe');
-                $message->subject('Test Email');
-            });
+            // Mail::send('backend.emails.loanReg', [''], function ($message) {
+            //     $message->from('john@johndoe.com', 'John Doe');
+            //     $message->to('john@johndoe.com', 'John Doe');
+            //     $message->subject('Test Email');
+            // });
 
 
             $loan = Loan::create([
