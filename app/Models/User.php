@@ -46,4 +46,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(LoanerInformation::class);
     }
+
+    // Accessor
+    public function getImageAttribute($name)
+    {
+        if (str_starts_with($name, 'http')) {
+            return $name;
+        } else {
+            if ($name) {
+                return asset('storage/uploads/clients/' . $name);
+            } else {
+                return '';
+            }
+            // return asset( 'storage/uploads/clients/' . $name );
+        }
+    }
 }

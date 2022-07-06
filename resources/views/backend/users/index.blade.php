@@ -27,7 +27,11 @@
                 @forelse ($usersInformation as $usersInfo)
                     <tr>
                         <td class="p-2 text-center border">
-                            <img src="{{ $usersInfo->image }}" alt="Image">
+                           @if (!empty($usersInfo->image))
+                                <img src="{{ $usersInfo->image }}" alt="Image">
+                            @else
+                                <img src="https://picsum.photos/id/1/200/300" alt="Image">
+                            @endif
                         </td>
                         <td class="p-2 border">
                             <span><b>Name: </b><a

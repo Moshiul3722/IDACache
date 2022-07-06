@@ -49,8 +49,6 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     //User
     Route::resource('users', UserController::class);
 
-
-    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password_reset');
 });
 
 require __DIR__ . '/auth.php';
