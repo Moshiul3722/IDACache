@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Loan;
 use App\Models\LoanerInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -130,8 +131,15 @@ $loaner_info = LoanerInformation::where('user_id', $user->id)->first();
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        Loan::where(['user_id'=>$user->id])->delete();
+        $user->delete();
+
+        $thumb = pathinfo($user->image);
+        $image_ext = $thumb['basename'];
+        Storage::delete('public/uploads/clients/' . $image_ext);
+
+        return redirect()->route('users.index')->with('success', 'User has been Deleted!');
     }
 }

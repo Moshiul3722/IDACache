@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class LoanController extends Controller
@@ -31,6 +32,10 @@ class LoanController extends Controller
     {
         // dd($request->all());
         if ($request->clientType == 'new') {
+            // dd(URL::previous());
+
+
+
             $request->validate([
                 'name'         => 'required|max:100',
                 'fathersName'  => 'required|max:100',
@@ -44,6 +49,9 @@ class LoanController extends Controller
                 'returnAmount' => 'required|integer',
                 'returnDate'   => 'required',
             ]);
+
+            // validation
+            // $this->userValidation($request);
 
             $thumb = null;
 
@@ -74,7 +82,6 @@ class LoanController extends Controller
             //     $message->subject('Test Email');
             // });
 
-
             $loan = Loan::create([
                 'loan_amount'       => $request->loanAmount,
                 'loan_date'         => $request->loanDate,
@@ -90,7 +97,26 @@ class LoanController extends Controller
                 'nid'               => $request->nid,
                 'business_category' => $request->businessType,
             ]);
+        } elseif ($request->clientType == 'old') {
+            $this->userValidation($request);
         }
         return redirect()->route('loan.index')->with('success', 'Loan Created');
+    }
+
+    public function userValidation(Request $request)
+    {
+        return $request->validate([
+            'name'         => 'required|max:100',
+            'fathersName'  => 'required|max:100',
+            'nid'          => 'required',
+            'email'       => 'required|string|email|max:255|unique:users,email,' . User::find('id'),
+            'phone'        => 'required',
+            'address'      => 'required',
+            'businessType' => 'required|not_in:none',
+            'loanAmount'   => 'required|integer',
+            'loanDate'     => 'required',
+            'returnAmount' => 'required|integer',
+            'returnDate'   => 'required',
+        ]);
     }
 }

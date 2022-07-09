@@ -23,15 +23,11 @@
                         <input type="text" name="userName" id="userName"
                             class="w-full border-gray-300 rounded-lg shadow-sm" value="{{ $userInfo->name }}" />
                     </div>
-
-
-
                     <div class="flex items-center mt-3">
                         <label for="fathersName" class="w-1/3">Father's Name</label>
                         <input type="text" name="fathersName" id="fathersName"
                             class="w-full border-gray-300 rounded-lg shadow-sm" value="{{ $userInfo->fatherName }}" />
                     </div>
-
                     @if ($userInfo->role == 'client')
                         <div class="flex mt-3 items-center">
                         <label for="nid" class="w-1/3">NID</label>
@@ -60,7 +56,7 @@
                         @if(!empty($userInfo->image))
                         <img id="previewImg" src="{{ $userInfo->image }}" alt="Placeholder" class="w-48 max-h-52 rounded-md" />
                             @else
-                            <img id="previewImg" src="https://picsum.photos/id/1/200/300" alt="Placeholder" class="w-48 max-h-52 rounded-md" />
+                            <img id="previewImg" src="https://via.placeholder.com/150" alt="Placeholder" class="w-48 max-h-52 rounded-md" />
                             @endif
                         <label for="thumbnail"
                             class="cursor-pointer border-2 border-dashed border-sky-700 rounded-md py-1 px-10 mt-4 text-center">Upload
@@ -69,14 +65,13 @@
                     </div>
                 </div>
             </div>
-@if ($userInfo->role == 'client')
-            <div class="flex mt-3">
-                <label for="address" class="w-[23%]">Address</label>
-                <textarea name="address" id="address" rows="4" cols="50"
-                    class="w-full border-gray-300 rounded-lg shadow-sm">{{$userInfo->lonerInformation->address??''}}</textarea>
-            </div>
-@endif
-
+            @if ($userInfo->role == 'client')
+                        <div class="flex mt-3">
+                            <label for="address" class="w-[23%]">Address</label>
+                            <textarea name="address" id="address" rows="4" cols="50"
+                                class="w-full border-gray-300 rounded-lg shadow-sm">{{$userInfo->lonerInformation->address??''}}</textarea>
+                        </div>
+            @endif
             <div class="flex justify-center items-center mt-6 py-6">
                 <button type="button" class="btn btn_primary" id="formClear">
                     Clear

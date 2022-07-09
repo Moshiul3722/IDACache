@@ -24,7 +24,7 @@
 @section('page', 'Loan')
 
 @section('content')
-    <div class=" mt-10 py-10 flex items-center justify-between">
+    <div class="py-4 flex items-center justify-between">
         <p class="text-lg font-medium">{{ count($loans) }} records found</p>
         <a href="{{ route('loan.create') }}" class="btn btn_secondary">Add New</a>
     </div>
@@ -43,6 +43,7 @@
         </thead>
         <tbody>
             @forelse ($loans as $loan)
+            {{-- {{dd($loan)}} --}}
                 <tr>
                     {{-- <td class="py-2 text-center border border-gray-400">{{ $loan->id }}</td> --}}
                     <td class="py-2 text-center border border-gray-400">{{ $loan->user->name }}</td>

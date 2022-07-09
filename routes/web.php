@@ -51,4 +51,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
 });
 
+Route::get('email', function () {
+    return view('backend.emails.loanerPasswordReset');
+});
+
 require __DIR__ . '/auth.php';

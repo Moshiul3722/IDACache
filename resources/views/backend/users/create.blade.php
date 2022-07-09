@@ -12,11 +12,8 @@
             {!! implode('', $errors->all('<div>:message</div>')) !!}
         @endif
 
-
         <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data" id="memberForm">
             @csrf
-            <div class="flex">
-                <div class="flex-1">
                     <div class="flex justify-between">
                         <div class="flex-2 w-3/4">
                             <div class="flex items-center mt-3" id="userName">
@@ -24,9 +21,6 @@
                                 <input type="text" name="userName" id="userName"
                                     class="w-full border-gray-300 rounded-lg shadow-sm" />
                             </div>
-
-
-
                             <div class="flex items-center mt-3">
                                 <label for="fathersName" class="w-1/3">Father's Name</label>
                                 <input type="text" name="fathersName" id="fathersName"
@@ -52,7 +46,7 @@
                         <!-- src="http://via.placeholder.com/240x200" -->
                         <div class="pl-8 flex items-center">
                             <div class="flex flex-col justify-center items-center">
-                                <img id="previewImg" src="https://api.lorem.space/image/movie?w=150&h=220" alt="Placeholder"
+                                <img id="previewImg" src="https://via.placeholder.com/150" alt="Placeholder"
                                     class="w-48 max-h-52 rounded-md" />
                                 <label for="thumbnail"
                                     class="cursor-pointer border-2 border-dashed border-sky-700 rounded-md py-1 px-10 mt-4 text-center">Upload
@@ -77,12 +71,6 @@
                         <button type="submit" class="btn btn_secondary">Save</button>
                     </div>
 
-                </div>
-
-                <div class="flex-1">
-
-                </div>
-            </div>
         </form>
     </div>
 

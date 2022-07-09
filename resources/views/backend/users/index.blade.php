@@ -55,7 +55,7 @@
                                         class="fa fa-edit"></i></a>
                                 <form action="{{ route('users.destroy', $usersInfo->id) }}"
                                     class="border-2 border-red-500 rounded-md p-1" method="POST"
-                                    onsubmit="confirm('Do You Want To Delete!')">
+                                    onsubmit="confirm('Do You Want To Delete this User!')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"><i class="fa fa-trash text-red-500"></i></button>
