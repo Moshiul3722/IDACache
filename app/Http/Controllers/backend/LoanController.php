@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Events\ActivityEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoanStoreRequest;
 use App\Models\Loan;
 use App\Models\LoanerInformation;
 use App\Models\User;
@@ -28,30 +29,10 @@ class LoanController extends Controller
         return view('backend.loan.create');
     }
 
-    public function store(Request $request)
+    public function store(LoanStoreRequest $request)
     {
         // dd($request->all());
         if ($request->clientType == 'new') {
-            // dd(URL::previous());
-
-
-
-            $request->validate([
-                'name'         => 'required|max:100',
-                'fathersName'  => 'required|max:100',
-                'nid'          => 'required',
-                'email'        => 'required|max:255|email',
-                'phone'        => 'required',
-                'address'      => 'required',
-                'businessType' => 'required|not_in:none',
-                'loanAmount'   => 'required|integer',
-                'loanDate'     => 'required',
-                'returnAmount' => 'required|integer',
-                'returnDate'   => 'required',
-            ]);
-
-            // validation
-            // $this->userValidation($request);
 
             $thumb = null;
 
@@ -90,33 +71,20 @@ class LoanController extends Controller
                 'user_id'           => $user->id,
             ]);
 
-            LoanerInformation::create([
-                'user_id'           => $user->id,
-                'loan_id'           => $loan->id,
-                'address'           => $request->address,
-                'nid'               => $request->nid,
-                'business_category' => $request->businessType,
-            ]);
+            if($loan){
+                LoanerInformation::create([
+                    'user_id'           => $user->id,
+                    'loan_id'           => $loan->id,
+                    'address'           => $request->address,
+                    'nid'               => $request->nid,
+                    'business_category' => $request->businessType,
+                ]);
+            }
+
         } elseif ($request->clientType == 'old') {
             $this->userValidation($request);
         }
         return redirect()->route('loan.index')->with('success', 'Loan Created');
     }
 
-    public function userValidation(Request $request)
-    {
-        return $request->validate([
-            'name'         => 'required|max:100',
-            'fathersName'  => 'required|max:100',
-            'nid'          => 'required',
-            'email'       => 'required|string|email|max:255|unique:users,email,' . User::find('id'),
-            'phone'        => 'required',
-            'address'      => 'required',
-            'businessType' => 'required|not_in:none',
-            'loanAmount'   => 'required|integer',
-            'loanDate'     => 'required',
-            'returnAmount' => 'required|integer',
-            'returnDate'   => 'required',
-        ]);
-    }
 }

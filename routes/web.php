@@ -5,6 +5,7 @@ use App\Http\Controllers\backend\DashboardController;
 use App\Http\Controllers\backend\CacheInController;
 use App\Http\Controllers\backend\LoanController;
 use App\Http\Controllers\backend\UserController;
+use App\Mail\UserVerificationEmail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +53,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 });
 
 Route::get('email', function () {
-    return view('backend.emails.loanerPasswordReset');
+    return new UserVerificationEmail();
 });
 
 require __DIR__ . '/auth.php';

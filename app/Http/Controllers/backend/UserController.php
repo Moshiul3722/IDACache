@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\backend;
 
+use App\Events\UsersEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserStoreRequest;
 use App\Models\Loan;
 use App\Models\LoanerInformation;
 use App\Models\User;
@@ -10,7 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -44,9 +48,33 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        // dd($request->all());
+        $thumb = null;
+
+        if (!empty($request->file('thumbnail'))) {
+            $thumb = time() . '-' . $request->file('thumbnail')->getClientOriginalName();
+            $thumb = str_replace(' ', '-', $thumb);
+            $request->file('thumbnail')->storeAs('public/uploads/clients', $thumb);
+        }
+
+       $user = User::create([
+            'name'       => $request->userName,
+            'email'      => $request->email,
+            'password'   => Hash::make(Str::random(8)),
+            'fatherName' => $request->fathersName,
+            'phone'      => $request->phone,
+            'image'      => $thumb,
+            'role'       => $request->role,
+            'status'     => 'active'
+        ]);
+
+
+        // Create an event
+        event(new UsersEvent($user));
+
+        return redirect()->route('users.index')->with('success', 'User Created');
     }
 
     /**

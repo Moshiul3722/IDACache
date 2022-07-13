@@ -12,7 +12,7 @@
             {!! implode('', $errors->all('<div>:message</div>')) !!}
         @endif
 
-        <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data" id="memberForm">
+        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data" id="memberForm">
             @csrf
                     <div class="flex justify-between">
                         <div class="flex-2 w-3/4">
@@ -28,7 +28,7 @@
                             </div>
                             <div class="flex mt-3 items-center">
                                 <label for="nid" class="w-1/3">NID</label>
-                                <input type="text" name="nid" id="nid"
+                                <input type="number" name="nid" id="nid"
                                     class="w-full border-gray-300 rounded-lg shadow-sm" />
                             </div>
                             <div class="flex mt-3 items-center">
@@ -41,6 +41,19 @@
                                 <label for="phone" class="w-1/3">Phone</label>
                                 <input type="number" name="phone" id="phone" required
                                     class="w-full border-gray-300 rounded-lg shadow-sm" />
+                            </div>
+                            <div class="flex mt-3 items-center">
+                                <label for="role" class="w-1/3">User Role</label>
+                                <select name="role" id="role" class="w-full border-gray-300 rounded-lg shadow-sm">
+                                    <option value="none" {{ old('role') == 'none' ? 'selected' : '' }}>Select
+                                        Role
+                                    </option>
+                                    <option value="member" {{ old('role') == 'member' ? 'selected' : '' }}>Member
+                                    </option>
+                                    <option value="client" {{ old('role') == 'client' ? 'selected' : '' }}>
+                                        Client
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <!-- src="http://via.placeholder.com/240x200" -->
