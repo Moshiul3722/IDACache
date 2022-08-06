@@ -37,6 +37,12 @@
                  Cash In
              </a>
 
+              <a href="{{route('loan.index')}}"
+                 class="flex items-center my-1 pl-4 py-3 {{ request()->routeIs('loan.*') ? 'text-white bg-sky-900 border-sky-900' : '' }}">
+
+                 Loan Type
+             </a>
+
              <a href="{{route('loan.index')}}"
                  class="flex items-center my-1 pl-4 py-3 {{ request()->routeIs('loan.*') ? 'text-white bg-sky-900 border-sky-900' : '' }}">
                  <svg class="w-5 mr-2" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

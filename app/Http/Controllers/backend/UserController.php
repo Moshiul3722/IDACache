@@ -59,7 +59,7 @@ class UserController extends Controller
             $request->file('thumbnail')->storeAs('public/uploads/clients', $thumb);
         }
 
-       $user = User::create([
+        $user = User::create([
             'name'       => $request->userName,
             'email'      => $request->email,
             'password'   => Hash::make(Str::random(8)),
@@ -72,7 +72,15 @@ class UserController extends Controller
 
 
         // Create an event
-        event(new UsersEvent($user));
+        // event(new UsersEvent($user));
+
+        if ($user) {
+            LoanerInformation::create([
+                'address' => $request->address,
+                'nid'     => $request->nid,
+                'user_id' => $user->id
+            ]);
+        }
 
         return redirect()->route('users.index')->with('success', 'User Created');
     }
@@ -108,17 +116,23 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
         // dd($request->all());
+        $loner = LoanerInformation::where('user_id', $user->id)->first();
 
+        if ($loner) {
+            $id = $loner->id;
+        } else {
+            $id = '';
+        }
+        // dd($loner->id);
         $request->validate([
             'userName'    => 'required|max    : 100',
             'fathersName' => 'required|max    : 100',
-            'nid'         => 'required',
+            'nid'         => 'integer|nullable|unique:loaner_information,nid,' . $id,
             // 'email'       => ['required', 'max: 250', 'unique: users,email,'.$user->id],
-            'email'       => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'email'       => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'phone'       => 'required',
-            'address'     => 'required',
+            'address'     => 'string|max:255',
         ]);
 
         // dd($user->id);
@@ -131,8 +145,7 @@ class UserController extends Controller
             $request->file('thumbnail')->storeAs('public/uploads/clients', $thumb);
         }
 
-
-       $user->update([
+        $user->update([
             'name'       => $request->userName,
             'email'      => $request->email,
             // 'password'   => Hash::make($request->password),
@@ -142,13 +155,23 @@ class UserController extends Controller
             // 'role'       => 'client',
             // 'status'     => $request->status,
         ]);
-$loaner_info = LoanerInformation::where('user_id', $user->id)->first();
 
-// dd($loaner_info);
-        $loaner_info->update([
-            'address'           => $request->address,
-            'nid'               => $request->nid
-        ]);
+        $loaner_info = LoanerInformation::where('user_id', $user->id)->first();
+        //  dd($loaner_info);
+        if ($loaner_info) {
+            $loaner_info->update([
+                'address' => $request->address,
+                'nid'     => $request->nid,
+            ]);
+        }
+
+        if ($loaner_info === null) {
+            LoanerInformation::create([
+                'address' => $request->address,
+                'nid'     => $request->nid,
+                'user_id' => $user->id
+            ]);
+        }
 
         return redirect()->route('users.index')->with('success', 'User Updated');
     }
@@ -161,7 +184,7 @@ $loaner_info = LoanerInformation::where('user_id', $user->id)->first();
      */
     public function destroy(User $user)
     {
-        Loan::where(['user_id'=>$user->id])->delete();
+        Loan::where(['user_id' => $user->id])->delete();
         $user->delete();
 
         $thumb = pathinfo($user->image);

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LoanStoreRequest extends FormRequest
 {
@@ -24,10 +25,12 @@ class LoanStoreRequest extends FormRequest
     public function rules()
     {
         return [
+                // 'name'         => ['required','max:100', Rule::unique('users')->ignore($this->route('post'))],
                 'name'         => 'required|max:100',
+                'name'         => 'unique:users,name|exclude_unless:clientType,old',
                 'fathersName'  => 'required|max:100',
                 'nid'          => 'required',
-                'email'        => 'required|max:255|email',
+                'email'        => 'required|email',
                 'phone'        => 'required',
                 'address'      => 'required',
                 'businessType' => 'required|not_in:none',

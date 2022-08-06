@@ -44,16 +44,19 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     // Loan
     Route::resource('loan', LoanController::class);
+    Route::get('/clients-info', [LoanController::class,'clientsInfo'])->name('clientsInfo');
+    Route::get('/members-info', [LoanController::class, 'membersInfo'])->name('membersInfo');
+
     // Activity
     Route::resource('activity', ActivityController::class);
 
     //User
     Route::resource('users', UserController::class);
 
+
+
 });
 
-Route::get('email', function () {
-    return new UserVerificationEmail();
-});
+
 
 require __DIR__ . '/auth.php';

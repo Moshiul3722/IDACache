@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('loaner_information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('loan_id');
-            $table->string('address',255);
-            $table->string('nid',255);
-            $table->string('business_category',255);
+            $table->foreignId('loan_id')->nullable();
+            $table->string('address',255)->nullable();
+            $table->string('nid',255)->nullable();
+            $table->string('business_category',255)->nullable();
             $table->timestamps();
         });
     }

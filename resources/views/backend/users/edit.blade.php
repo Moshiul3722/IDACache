@@ -28,7 +28,7 @@
                         <input type="text" name="fathersName" id="fathersName"
                             class="w-full border-gray-300 rounded-lg shadow-sm" value="{{ $userInfo->fatherName }}" />
                     </div>
-                    @if ($userInfo->role == 'client')
+                    @if ($userInfo->role == 'client'||$userInfo->role == 'member')
                         <div class="flex mt-3 items-center">
                         <label for="nid" class="w-1/3">NID</label>
                         <input type="text" name="nid" id="nid"
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            @if ($userInfo->role == 'client')
+            @if ($userInfo->role == 'client'||$userInfo->role == 'member')
                         <div class="flex mt-3">
                             <label for="address" class="w-[23%]">Address</label>
                             <textarea name="address" id="address" rows="4" cols="50"

@@ -32,7 +32,7 @@
     <table class="table-collaps bg-white w-full">
         <thead>
             <tr>
-                {{-- <th class="text-base w-20 py-2 border border-gray-400">#</th> --}}
+                <th class="text-base w-20 py-2 border border-gray-400">#</th>
                 <th class="text-base py-2 border border-gray-400">Name</th>
                 <th class="text-base py-2 border border-gray-400">Loan Amount</th>
                 <th class="text-base py-2 border border-gray-400">Loan Date</th>
@@ -42,16 +42,18 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($loans as $loan)
+            @forelse ($loans as $key=>$loan)
             {{-- {{dd($loan)}} --}}
                 <tr>
-                    {{-- <td class="py-2 text-center border border-gray-400">{{ $loan->id }}</td> --}}
+                    <td class="py-2 text-center border border-gray-400">{{ ++$key }}</td>
                     <td class="py-2 text-center border border-gray-400">{{ $loan->user->name }}</td>
                     <td class="py-2 text-center border border-gray-400">{{ $loan->loan_amount }}</td>
-                    <td class="py-2 text-center border border-gray-400">{{ $loan->created_at->format('d M, Y') }}
+                    <td class="py-2 text-center border border-gray-400">
+                        {{ Carbon\Carbon::parse($loan->loan_date)->format('d M, Y') }}
                     </td>
                     <td class="py-2 text-center border border-gray-400">{{ $loan->received_amount }}</td>
-                    <td class="py-2 text-center border border-gray-400">{{ $loan->updated_at->format('d M, Y') }}
+                    <td class="py-2 text-center border border-gray-400">
+                        {{ Carbon\Carbon::parse($loan->received_date)->format('d M, Y') }}
                     </td>
                     <td class="py-2 text-center border border-gray-400">
                         <div class="border-2 border-red-500 p-1 inline-block px-2 py-1 rounded">
