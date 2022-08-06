@@ -5,8 +5,7 @@
 
 @section('content')
 
-    <div class="bg-white p-8 rounded-md">
-
+    <div class="bg-white p-8 rounded-md"></div>
 
         @if ($errors->any())
             {!! implode('', $errors->all('<div>:message</div>')) !!}
@@ -37,25 +36,31 @@
                 <div class="flex-2 w-3/4">
                     <div class="flex items-center mt-3" id="clientName">
                         <label for="name" class="w-1/3">Client Name</label>
-                        <input type="text" name="name" id="name" class="w-full border-gray-300 rounded-lg shadow-sm" />
+                        <input type="text" name="name" id="name"
+                            class="w-full border-gray-300 rounded-lg shadow-sm" />
                     </div>
                     <div class="flex items-center mt-3" id="memberInput">
                         <label for="member" class="w-1/3">Member</label>
                         <select name="member" id="select_member" class="w-full border-gray-300 rounded-lg shadow-sm">
-                            <option value="">Please select member</option>
-                            <option value="">Please select-1</option>
-                            <option value="">Please select-2</option>
-                            <option value="">Please select-3</option>
+                            <option value="none">Select Member</option>
+                            @foreach ($members as $member)
+                                <option value="{{ $member->id }}">
+                                    {{ $member->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="flex items-center mt-3" id="clientSelect">
                         <label for="oldClient" class="w-1/3">Client Name</label>
                         <select name="oldClient" id="old_client" class="w-full border-gray-300 rounded-lg shadow-sm">
-                            <option value="">Please select client name</option>
-                            <option value="">Please select-1</option>
-                            <option value="">Please select-2</option>
-                            <option value="">Please select-3</option>
+                            <option value="none">Select Client</option>
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->id }}">
+                                    {{ $client->name }}
+                                </option>
+                            @endforeach
+
                         </select>
                     </div>
 
@@ -66,7 +71,8 @@
                     </div>
                     <div class="flex mt-3 items-center">
                         <label for="nid" class="w-1/3">NID</label>
-                        <input type="text" name="nid" id="nid" class="w-full border-gray-300 rounded-lg shadow-sm" />
+                        <input type="number" name="nid" id="nid"
+                            class="w-full border-gray-300 rounded-lg shadow-sm" />
                     </div>
                     <div class="flex mt-3 items-center">
                         <label for="email" class="w-1/3">Email</label>
@@ -88,8 +94,7 @@
                         <label for="thumbnail"
                             class="cursor-pointer border-2 border-dashed border-sky-700 rounded-md py-1 px-10 mt-4 text-center">Upload
                             Image</label>
-                        <input type="file" id="thumbnail" name="thumbnail" class="hidden"
-                            onchange="previewFile(this)" />
+                        <input type="file" id="thumbnail" name="thumbnail" class="hidden" onchange="previewFile(this)" />
                     </div>
                 </div>
             </div>
@@ -105,7 +110,8 @@
                 <div class="flex mt-4">
                     <div class="flex flex-1 mt-3 items-center">
                         <label for="businessType" class="w-1/2">Business Type</label>
-                        <select name="businessType" id="businessType" class="w-full border-gray-300 rounded-lg shadow-sm">
+                        <select name="businessType" id="businessType"
+                            class="w-full border-gray-300 rounded-lg shadow-sm">
                             <option value="none">Select Type</option>
                             <option value="Cow Business">Cow Business</option>
                             <option value="Marrige">Marrige</option>
@@ -151,18 +157,95 @@
         </form>
     </div>
 
-<style>
-    span.select2.select2-container {
-    width: 100% !important;
+    <style>
+        span.select2.select2-container {
+            width: 100% !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+    border-radius: 8px;
 }
-</style>
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 40px !important;
+}
+.select2-container .select2-selection--single {
+
+    height: auto;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    top: 73%;
+}
+    </style>
 @endsection
 
 @section('scripts')
     <script>
         $('#select_member').select2();
         $('#old_client').select2();
+
+        //Ajax Setup
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr("content")
+            }
+        });
+
+        // get clients via ajax
+        $("#old_client").on('change', function(e) {
+            e.preventDefault();
+
+            let data = {
+                client_id: $('#old_client').find(":selected").val(),
+            }
+            let url = "{{ route('clientsInfo') }}";
+            // alert(url);
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: data,
+                success: function(response) {
+                    console.log(response);
+                    // console.log(response.clients[0].fatherName);
+                    // console.log(response[0].fatherName);
+                    // let fathersName = ;
+                    $('#fathersName').val(response.clients[0].fatherName);
+                    $('#email').val(response.clients[0].email).prop('readonly', true).css('user-select',
+                        'none').css('background-color', '#ededed');
+                    $('#phone').val(response.clients[0].phone);
+                    $('#nid').val(response.loner_info[0].nid);
+                    $('#address').val(response.loner_info[0].address);
+                    $('#previewImg').attr("src", response.clients[0].image);
+                }
+            });
+
+        });
+
+        $("#select_member").on('change', function(e){
+            e.preventDefault();
+
+            let data = {
+                member_id: $('#select_member').find(":selected").val(),
+            }
+            let url = "{{ route('membersInfo') }}";
+
+             $.ajax({
+                type: 'GET',
+                url: url,
+                data: data,
+                success: function(response) {
+                    console.log(response);
+                    $('#fathersName').val(response.members[0].fatherName);
+                    $('#email').val(response.members[0].email).prop('readonly', true).css('user-select',
+                        'none').css('background-color', '#ededed');
+                    $('#phone').val(response.members[0].phone);
+                    $('#nid').val(response.loner_info[0].nid);
+                    $('#address').val(response.loner_info[0].address);
+                    $('#previewImg').attr("src", response.members[0].image);
+                }
+             });
+        })
     </script>
 @endsection
-
-
